@@ -118,52 +118,54 @@
       </div>
     </main>
     <script>
-      const array = JSON.parse(localStorage.getItem("idCheck")) || [];
-      const main = document.querySelector(".conteudo");
+      const API_URL = "http://localhost:3000/lavagens"; // Troque pelo endereço do seu backend na Vercel ou onde você o hospedar
+
+      async function fetchLavagens() {
+        const response = await fetch(API_URL);
+        return response.json();
+      }
+
+      async function saveLavagem(id, checked) {
+        const response = await fetch(`${API_URL}/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ checked }),
+        });
+        return response.json();
+      }
+
       const ol = document.querySelector(".ol");
       const dias = document.querySelector(".dias");
       let lavagens = 13;
 
-      if (localStorage.dias == undefined) {
-        localStorage.dias = lavagens;
-      }
-      dias.innerHTML = localStorage.dias;
-      for (let i = 0; i < lavagens; i++) {
-        const li = document.createElement("li");
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.dataset.id = i + 1;
-        li.textContent = "dia ";
-        li.appendChild(checkbox);
-        ol.appendChild(li);
-        marcaCaixa(checkbox);
-      }
+      fetchLavagens().then((data) => {
+        dias.innerHTML = lavagens - data.filter((l) => l.checked).length;
+        for (let i = 0; i < lavagens; i++) {
+          const li = document.createElement("li");
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.dataset.id = i + 1;
+          li.textContent = "dia ";
+          li.appendChild(checkbox);
+          ol.appendChild(li);
 
-      function marcaCaixa(checkbox) {
-        if (array.includes(checkbox.dataset.id)) {
-          checkbox.checked = true;
-        }
-
-        checkbox.addEventListener("change", () => {
-          let id = checkbox.dataset.id;
-          if (checkbox.checked) {
-            if (!array.includes(id)) {
-              array.push(id);
-              localStorage.dias = lavagens - array.length;
-              dias.innerHTML = lavagens - array.length;
-              localStorage.setItem("idCheck", JSON.stringify(array));
-            }
-          } else {
-            const index = array.indexOf(id);
-            if (index !== -1) {
-              array.splice(index, 1);
-              localStorage.dias = lavagens - array.length;
-              dias.innerHTML = lavagens - array.length;
-              localStorage.setItem("idCheck", JSON.stringify(array));
-            }
+          const lavagem = data.find((l) => l.id === i + 1);
+          if (lavagem && lavagem.checked) {
+            checkbox.checked = true;
           }
-        });
-      }
+
+          checkbox.addEventListener("change", () => {
+            saveLavagem(i + 1, checkbox.checked).then(() => {
+              fetchLavagens().then((data) => {
+                dias.innerHTML =
+                  lavagens - data.filter((l) => l.checked).length;
+              });
+            });
+          });
+        }
+      });
     </script>
   </body>
 </html>
