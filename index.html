@@ -11,7 +11,7 @@
     * {
       margin: 0;
       padding: 0;
-      font-family: 'Roboto Light', sans-serif;
+      font-family: "Roboto Light", sans-serif;
     }
 
     ol {
@@ -122,12 +122,13 @@
       const main = document.querySelector(".conteudo");
       const ol = document.querySelector(".ol");
       const dias = document.querySelector(".dias");
+      let lavagens = 13;
 
       if (localStorage.dias == undefined) {
-        localStorage.dias = 10;
+        localStorage.dias = lavagens;
       }
       dias.innerHTML = localStorage.dias;
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < lavagens; i++) {
         const li = document.createElement("li");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
@@ -148,16 +149,16 @@
           if (checkbox.checked) {
             if (!array.includes(id)) {
               array.push(id);
-              localStorage.dias = 10 - array.length;
-              dias.innerHTML = 10 - array.length;
+              localStorage.dias = lavagens - array.length;
+              dias.innerHTML = lavagens - array.length;
               localStorage.setItem("idCheck", JSON.stringify(array));
             }
           } else {
             const index = array.indexOf(id);
             if (index !== -1) {
               array.splice(index, 1);
-              localStorage.dias = 10 - array.length;
-              dias.innerHTML = 10 - array.length;
+              localStorage.dias = lavagens - array.length;
+              dias.innerHTML = lavagens - array.length;
               localStorage.setItem("idCheck", JSON.stringify(array));
             }
           }
