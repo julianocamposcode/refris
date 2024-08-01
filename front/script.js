@@ -27,9 +27,13 @@ async function initialize() {
     for (let i = 0; i < lavagens; i++) {
         const li = document.createElement('li');
         const checkbox = document.createElement('input');
+        const label = document.createElement('label');
+        label.setAttribute('for', 'checkbox1')
         checkbox.type = 'checkbox';
+        checkbox.id = 'checkbox1';
         checkbox.dataset.id = i + 1;
         li.textContent = 'dia ';
+        li.appendChild(label);
         li.appendChild(checkbox);
         ol.appendChild(li);
 
