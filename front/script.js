@@ -1,4 +1,4 @@
-const apiUrl = 'https://refris-back.vercel.app';
+// const apiUrl = 'https://refris-back.vercel.app';
 
 let lavagens = 13;
 
