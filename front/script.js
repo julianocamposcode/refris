@@ -1,4 +1,5 @@
-const apiUrl = 'https://refris-back.vercel.app'; // Substitua pelo URL do seu backend
+const apiUrl = 'https://refris-back.vercel.app';
+
 let lavagens = 13;
 
 async function fetchLavagens() {
@@ -40,6 +41,9 @@ async function initialize() {
         if (checkedIds.includes(Number(checkbox.dataset.id))) {
             checkbox.checked = true;
         }
+
+        checkbox.checked
+        console.log()
 
         checkbox.addEventListener('change', async () => {
             let id = Number(checkbox.dataset.id);
