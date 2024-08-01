@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:3000'; // Substitua pelo URL do seu backend
+const apiUrl = 'https://refris-back.vercel.app'; // Substitua pelo URL do seu backend
 let lavagens = 13;
 
 async function fetchLavagens() {
